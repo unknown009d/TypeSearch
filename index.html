@@ -26,22 +26,23 @@
         border: 1.5pt solid #ffffff50;
         color: #f1f1f1;
       }
-      #list {
-        margin-top: 0.6rem;
-        list-style-type: none;
-        color: #f1f1f1;
-        background-color: #404040;
-        border-radius: 3pt;
-        min-width: 150px;
-        overflow: hidden;
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 80%;
+        margin: 2rem 0;
       }
-      #list li {
-        padding: 0.5rem 1rem;
-        width: 100%;
+
+      td,
+      th {
+        border: 1px solid #14141467;
+        text-align: left;
+        padding: 8px;
+        color: #ffffff70;
       }
-      #list li:hover {
-        background-color: #00000013;
-        cursor: pointer;
+
+      tr:nth-child(even) {
+        background-color: #14141467;
       }
       h1 {
         color: #e2e2e2;
@@ -56,7 +57,7 @@
       placeholder="Enter anything"
       oninput="autoCom(this,'list')"
     />
-    <ul id="list"></ul>
+    <table id="list"></table>
     <script>
       let autoCom = (element, out) => {
         let ln = element.value.length - 1;
@@ -75,12 +76,22 @@
                 }
               }
             });
-            let output = "";
+            let output = `
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+              </tr>
+            `;
             filterName.forEach((items) => {
               output += `
-                <li>${items.id} : ${items.name}</li>
+              <tr>
+                <td>${items.id}</td>
+                <td>${items.name}</td>
+              </tr>
             `;
             });
+            output += `
+            `;
             document.getElementById(out).innerHTML = output;
           })
           .catch((err) => {
