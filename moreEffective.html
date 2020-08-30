@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Autocomplete</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins";
+      }
+      body {
+        background-color: #303030;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      input[type="text"] {
+        all: unset;
+        padding: 0.8rem 1.5rem;
+        border-radius: 3pt;
+        border: 1.5pt solid #ffffff50;
+        color: #f1f1f1;
+      }
+      #list {
+        margin-top: 0.6rem;
+        list-style-type: none;
+        color: #f1f1f1;
+        background-color: #404040;
+        border-radius: 3pt;
+        min-width: 150px;
+        overflow: hidden;
+      }
+      #list li {
+        padding: 0.5rem 1rem;
+        width: 100%;
+      }
+      #list li:hover {
+        background-color: #00000013;
+        cursor: pointer;
+      }
+      h1 {
+        color: #e2e2e2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Enter text to search</h1>
+    <br />
+    <input
+      type="text"
+      placeholder="Enter anything"
+      oninput="autoCom(this,'list')"
+    />
+    <ul id="list"></ul>
+    <script>
+      let autoCom = (element, out) => {
+        let ln = element.value.length - 1;
+        let elval = element.value;
+        fetch("data.json")
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            let filterName = data.filter((item) => {
+              if (ln + 1 > 0) {
+                if (item.name[ln] == " ") {
+                  return item.name[ln] == elval[ln];
+                } else {
+                  return item.name[ln].toLowerCase() == elval[ln];
+                }
+              }
+            });
+
+            let output = "";
+
+            filterName.forEach((items) => {
+              output += `
+                <li>${items.id} : ${items.name}</li>
+            `;
+            });
+
+            document.getElementById(out).innerHTML = output;
+          })
+          .catch((err) => {
+            console.error("There was a problem in the code : " + err);
+          });
+      };
+    </script>
+    <script>
+      const dboi = (element, out) => {
+        let ln = element.value.length - 1;
+        let elval = element.value.toLowerCase();
+        let selText = "Meyonese";
+        if (elval == "" || elval == " ") {
+          element.style.borderColor = "#ffffff50";
+        } else {
+          let chTxt = "";
+          if (selText.length >= element.value.length) {
+            for (let i = 0; i <= ln; i++) {
+              console.log(selText[i] + " : " + elval);
+              chTxt += selText[i].toLowerCase();
+              if (elval != chTxt) {
+                element.style.borderColor = "red";
+              } else if (elval == chTxt) {
+                element.style.borderColor = "green";
+              }
+            }
+          } else {
+            element.style.borderColor = "red";
+          }
+        }
+      };
+
+      const autoComN = (element, out) => {
+        console.log(dboi(element, out));
+      };
+    </script>
+  </body>
+</html>
